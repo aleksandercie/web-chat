@@ -10,7 +10,7 @@ export default function ChatInput() {
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       const { error } = await supabase
-        .from('messgae')
+        .from('messages')
         .insert({ text: e.currentTarget.value });
       if (error) {
         toast.error(error.message);
