@@ -7,7 +7,9 @@ export default function Chat({ user }: { user: User }) {
   return (
     <div className="w-full flex flex-col max-w-screen-lg border">
       <div className="w-full flex justify-between items-center border-b p-8">
-        <h1 className="text-2xl">Welcome: {user.user_metadata.user_name}</h1>
+        <h1 className="text-2xl capitalize">
+          Welcome: {user.user_metadata.user_name}
+        </h1>
         <LogoutButton />
       </div>
       <div className="flex gap-8 p-8">

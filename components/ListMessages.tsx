@@ -7,6 +7,7 @@ export default async function ListMessages() {
   const supabase = supabaseServer();
 
   const { data } = await supabase.from('messages').select('*,users(*)');
+
   return (
     <Suspense fallback="loading...">
       <Messages />
