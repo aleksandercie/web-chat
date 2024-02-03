@@ -1,5 +1,7 @@
 import { User } from '@supabase/supabase-js';
 import LogoutButton from './LogoutButton';
+import { Input } from '@/components/ui/input';
+import Message from './Message';
 
 export default function Chat({ user }: { user: User }) {
   return (
@@ -11,8 +13,10 @@ export default function Chat({ user }: { user: User }) {
       <div className="flex gap-8 p-8">
         <div className="w-1/2">users list</div>
         <div className="w-1/2 flex flex-col gap-4">
-          <div>chat history</div>
-          <div>input text</div>
+          <div className="flex flex-col gap-2">
+            <Message />
+          </div>
+          <Input placeholder="send message" />
         </div>
       </div>
     </div>
