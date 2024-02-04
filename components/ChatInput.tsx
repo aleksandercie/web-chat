@@ -11,7 +11,7 @@ import { Imessage, useMessage } from '@/lib/store/messages';
 export default function ChatInput() {
   const inputRef = useRef<HTMLInputElement>(null);
   const user = useUser((state) => state.user);
-  const addMessage = useMessage((state) => state.addMessage);
+  const { addMessage, setOptimisticIds } = useMessage((state) => state);
   const supabase = supabaseBrowser();
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -19,7 +19,6 @@ export default function ChatInput() {
 
       if (text.trim()) {
         const id = uuidv4();
-        console.log(text, id);
         const newMessage = {
           id,
           text,
@@ -34,6 +33,7 @@ export default function ChatInput() {
         };
 
         addMessage(newMessage as Imessage);
+        setOptimisticIds(newMessage.send_by as string);
 
         const { error } = await supabase.from('messages').insert({ text });
         if (error) {
