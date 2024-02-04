@@ -14,19 +14,21 @@ export type Imessage = {
 };
 
 interface MessageState {
-  messages: Imessage[];
+  messages: Imessage[] | undefined;
   optimisticIds: string[];
   addMessage: (message: Imessage) => void;
   setOptimisticIds: (id: string) => void;
 }
 
-export const useMessage = create<MessageState>()((set) => ({
-  messages: [],
+export const useMessage = create<MessageState>((set) => ({
+  messages: undefined,
   optimisticIds: [],
-  addMessage: (newMessages) =>
+  addMessage: (newMessage) =>
     set((state) => ({
-      messages: [...state.messages, newMessages]
+      messages: state.messages ? [...state.messages, newMessage] : [newMessage]
     })),
-  setOptimisticIds: (id: string) =>
-    set((state) => ({ optimisticIds: [...state.optimisticIds, id] }))
+  setOptimisticIds: (id) =>
+    set((state) => ({
+      optimisticIds: [...state.optimisticIds, id]
+    }))
 }));

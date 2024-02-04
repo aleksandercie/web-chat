@@ -5,6 +5,7 @@ import { useUser } from '@/lib/store/user';
 import { supabaseBrowser } from '@/lib/supabase/browser';
 import Image from 'next/image';
 import { useEffect } from 'react';
+import Spinner from './Spinner';
 
 export default function Users() {
   const { setActiveUsersByIds, activeUsers } = useUsers((state) => state);
@@ -35,6 +36,7 @@ export default function Users() {
   return (
     <div className="flex flex-col gap-4 overflow-y-auto max-h-[320px]">
       <h2>Active Users:</h2>
+      {activeUsers === undefined && <Spinner />}
       {activeUsers?.map((user) => (
         <div key={user.id} className="flex gap-2 items-center">
           <Image

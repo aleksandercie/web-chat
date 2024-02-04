@@ -5,6 +5,7 @@ import { supabaseBrowser } from '@/lib/supabase/browser';
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import { toast } from 'sonner';
+import Spinner from './Spinner';
 
 export default function Messages() {
   const scrollRef = useRef() as React.MutableRefObject<HTMLDivElement>;
@@ -57,7 +58,8 @@ export default function Messages() {
       className="flex flex-col gap-2 overflow-y-auto max-h-[320px]"
       ref={scrollRef}
     >
-      {messages.map((message) => (
+      {messages === undefined && <Spinner />}
+      {messages?.map((message) => (
         <div className="flex gap-3" key={message?.text}>
           <Image
             src={message?.users?.avatar_url!}
