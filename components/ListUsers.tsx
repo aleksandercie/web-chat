@@ -1,7 +1,8 @@
-import { Suspense } from 'react';
+import { Suspense, lazy } from 'react';
 import { supabaseServer } from '@/lib/supabase/server';
-import InitUsers from '@/lib/store/InitUsers';
-import Users from './Users';
+
+const Users = lazy(() => import('./Users'));
+const InitUsers = lazy(() => import('@/lib/store/InitUsers'));
 
 export default async function ListUsers() {
   const supabase = supabaseServer();

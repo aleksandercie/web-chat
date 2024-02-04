@@ -21,7 +21,9 @@ export default function Messages() {
 
   return (
     <div
-      className="flex flex-col gap-2 overflow-y-auto max-h-[320px]"
+      className={`flex flex-col gap-2 max-h-[320px] ${
+        messages !== undefined && 'overflow-y-auto'
+      }`}
       ref={scrollRef}
     >
       {messages === undefined && <Spinner />}

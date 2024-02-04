@@ -37,7 +37,11 @@ export default function Users() {
   }, [user]);
 
   return (
-    <div className="flex flex-col gap-4 overflow-y-auto max-h-[320px]">
+    <div
+      className={`flex flex-col gap-4  max-h-[320px] ${
+        users !== undefined && 'overflow-y-auto'
+      }`}
+    >
       <h2>Users list:</h2>
       {users === undefined && <Spinner />}
       {users?.map((user) => (
