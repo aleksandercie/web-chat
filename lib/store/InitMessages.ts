@@ -1,4 +1,5 @@
 'use client';
+
 import { useEffect, useRef } from 'react';
 
 import { Imessage, useMessage } from './messages';
@@ -11,6 +12,7 @@ export default function InitMessages({ messages }: { messages: Imessage[] }) {
       useMessage.setState({ messages });
     }
     initState.current = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return null;

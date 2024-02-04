@@ -1,57 +1,18 @@
 'use client';
 
-import { Imessage, useMessage } from '@/lib/store/messages';
-import { supabaseBrowser } from '@/lib/supabase/browser';
+import { useMessage } from '@/lib/store/messages';
 import Image from 'next/image';
-import { useEffect, useRef } from 'react';
-import { toast } from 'sonner';
+import { useRef } from 'react';
 import Spinner from './Spinner';
+import { useAutoScroll } from '@/hooks/useAutoScroll';
+import { useSupabaseSubscription } from '@/hooks/useSupabaseSubscription';
 
 export default function Messages() {
   const scrollRef = useRef() as React.MutableRefObject<HTMLDivElement>;
-  const { messages, addMessage, optimisticIds } = useMessage((state) => state);
+  const { messages } = useMessage((state) => state);
 
-  const supabase = supabaseBrowser();
-  useEffect(() => {
-    const channel = supabase
-      .channel('chat')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'messages' },
-        async (payload) => {
-          if (!optimisticIds.includes(payload.new.send_by)) {
-            const { error, data } = await supabase
-              .from('users')
-              .select('*')
-              .eq('id', payload.new.send_by)
-              .single();
-            if (error) {
-              toast.error(error.message);
-            } else {
-              const newMessage = {
-                ...payload.new,
-                users: data
-              };
-              addMessage(newMessage as Imessage);
-            }
-          }
-        }
-      )
-      .subscribe();
-    return () => {
-      channel.unsubscribe();
-    };
-  }, [messages]);
-
-  useEffect(() => {
-    const scrollContainer = scrollRef.current;
-    if (scrollContainer) {
-      scrollContainer.scrollTo({
-        top: scrollContainer.scrollHeight,
-        behavior: 'smooth'
-      });
-    }
-  }, [messages]);
+  useSupabaseSubscription();
+  useAutoScroll(scrollRef);
 
   return (
     <div

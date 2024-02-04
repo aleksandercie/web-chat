@@ -11,6 +11,7 @@ export default function InitUsers({ users }: { users: Iuser[] | undefined }) {
       useUsers.setState({ users });
     }
     initState.current = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return null;

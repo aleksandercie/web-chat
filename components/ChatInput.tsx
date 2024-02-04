@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react'; // Ensure React is imported
+import React, { useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { supabaseBrowser } from '@/lib/supabase/browser';
 import { toast } from 'sonner';
