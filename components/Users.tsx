@@ -8,7 +8,9 @@ import { useEffect } from 'react';
 import Spinner from './Spinner';
 
 export default function Users() {
-  const { setActiveUsersByIds, activeUsers } = useUsers((state) => state);
+  const { setActiveUsersByIds, activeUsers, users } = useUsers(
+    (state) => state
+  );
   const user = useUser((state) => state.user);
   const supabase = supabaseBrowser();
 
@@ -36,9 +38,9 @@ export default function Users() {
 
   return (
     <div className="flex flex-col gap-4 overflow-y-auto max-h-[320px]">
-      <h2>Active Users:</h2>
-      {activeUsers === undefined && <Spinner />}
-      {activeUsers?.map((user) => (
+      <h2>Users list:</h2>
+      {users === undefined && <Spinner />}
+      {users?.map((user) => (
         <div key={user.id} className="flex gap-2 items-center">
           <Image
             src={user.avatar_url}
@@ -48,7 +50,6 @@ export default function Users() {
             className="rounded-full ring-2 h-8 w-8"
           />
           <div className="flex gap-1 items-center">
-            <div className="h-2 w-2 bg-green-500 rounded-full" />
             <h3 className="font-bold capitalize">{user.display_name}</h3>
           </div>
         </div>

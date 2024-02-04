@@ -7,8 +7,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Web chat',
-  description: 'Web chat'
+  title: 'WeChat',
+  description: 'WeChat'
 };
 
 export default function RootLayout({
