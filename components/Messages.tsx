@@ -67,11 +67,11 @@ export default function Messages() {
             className="rounded-full ring-2 h-8 w-8"
           />
           <div className="flex flex-col gap-1">
-            <div className="flex gap-2">
-              <h2 className="font-bold capitalize">
+            <div className="flex flex-col lg:flex-row gap-1 lg:gap-2 lg:items-center">
+              <h2 className="font-bold capitalize text-sm">
                 {message?.users?.display_name}
               </h2>
-              <h3 className="text-gray-400">
+              <h3 className="text-gray-400 text-xs w-28">
                 {new Date(message?.created_at!).toDateString()}
               </h3>
             </div>

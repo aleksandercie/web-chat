@@ -45,8 +45,8 @@ export default function Users() {
             className="rounded-full ring-2 h-8 w-8"
           />
           <div className="flex gap-1 items-center">
-            <h3 className="font-bold capitalize">{user.display_name}</h3>
             <div className="h-2 w-2 bg-green-500 rounded-full" />
+            <h3 className="font-bold capitalize">{user.display_name}</h3>
           </div>
         </div>
       ))}

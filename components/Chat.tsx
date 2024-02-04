@@ -7,17 +7,18 @@ import ListUsers from './ListUsers';
 export default function Chat({ user }: { user: User }) {
   return (
     <div className="w-full flex flex-col max-w-screen-lg border">
-      <div className="w-full flex justify-between items-center border-b p-8">
-        <h1 className="text-2xl capitalize">
-          Welcome: {user.user_metadata.user_name}
+      <div className="w-full flex flex-col md:flex-row gap-4 justify-between md:items-center border-b p-4 md:p-8">
+        <h1 className="text-xl md:text-2xl capitalize overflow-hidden text-ellipsis whitespace-nowrap w-full">
+          Welcome: <br />
+          {user.user_metadata.user_name}
         </h1>
         <LogoutButton />
       </div>
-      <div className="flex gap-8 p-8">
-        <div className="w-1/2">
+      <div className="flex flex-col md:flex-row gap-8 p-4 md:p-8">
+        <div className="w-full md:w-1/2">
           <ListUsers />
         </div>
-        <div className="w-1/2 flex flex-col gap-4">
+        <div className="w-full md:w-1/2 flex flex-col gap-4">
           <ListMessages />
           <ChatInput />
         </div>
