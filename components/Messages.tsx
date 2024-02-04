@@ -3,10 +3,11 @@
 import { Imessage, useMessage } from '@/lib/store/messages';
 import { supabaseBrowser } from '@/lib/supabase/browser';
 import Image from 'next/image';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 
 export default function Messages() {
+  const scrollRef = useRef() as React.MutableRefObject<HTMLDivElement>;
   const { messages, addMessage, optimisticIds } = useMessage((state) => state);
 
   const supabase = supabaseBrowser();
@@ -41,8 +42,21 @@ export default function Messages() {
     };
   }, [messages]);
 
+  useEffect(() => {
+    const scrollContainer = scrollRef.current;
+    if (scrollContainer) {
+      scrollContainer.scrollTo({
+        top: scrollContainer.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
+  }, [messages]);
+
   return (
-    <div className="flex flex-col gap-2 overflow-y-auto max-h-[320px]">
+    <div
+      className="flex flex-col gap-2 overflow-y-auto max-h-[320px]"
+      ref={scrollRef}
+    >
       {messages.map((message) => (
         <div className="flex gap-3" key={message?.text}>
           <Image
