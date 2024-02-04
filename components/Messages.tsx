@@ -7,7 +7,7 @@ export default function Messages() {
   const messages = useMessage((state) => state.messages);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 overflow-y-auto max-h-[320px]">
       {messages.map((message) => (
         <div className="flex gap-3" key={message?.text}>
           <Image
