@@ -6,32 +6,78 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
       messages: {
         Row: {
           created_at: string
           id: string
+          room_id: string
           send_by: string
           text: string
         }
         Insert: {
           created_at?: string
           id?: string
+          room_id?: string
           send_by?: string
           text: string
         }
         Update: {
           created_at?: string
           id?: string
+          room_id?: string
           send_by?: string
           text?: string
         }
         Relationships: [
           {
+            foreignKeyName: "messages_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "rooms"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "messages_send_by_fkey"
             columns: ["send_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      rooms: {
+        Row: {
+          created_at: string
+          id: string
+          user1_id: string
+          user2_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          user1_id?: string
+          user2_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          user1_id?: string
+          user2_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rooms_user1_id_fkey"
+            columns: ["user1_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rooms_user2_id_fkey"
+            columns: ["user2_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]

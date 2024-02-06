@@ -5,6 +5,7 @@ export type Imessage = {
   id: string;
   send_by: string;
   text: string;
+  room_id: string;
   users: {
     avatar_url: string;
     created_at: string;

@@ -7,10 +7,12 @@ import { toast } from 'sonner';
 import { v4 as uuidv4 } from 'uuid';
 import { useUser } from '@/lib/store/user';
 import { Imessage, useMessage } from '@/lib/store/messages';
+import { useRooms } from '@/lib/store/rooms';
 
 export default function ChatInput() {
   const inputRef = useRef<HTMLInputElement>(null);
   const user = useUser((state) => state.user);
+  const { activeRoom } = useRooms((state) => state);
   const { addMessage, setOptimisticIds } = useMessage((state) => state);
   const supabase = supabaseBrowser();
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -23,6 +25,7 @@ export default function ChatInput() {
           id,
           text,
           send_by: user?.id,
+          room_id: activeRoom?.id,
           created_at: new Date().toISOString(),
           users: {
             id: user?.id,
@@ -35,7 +38,9 @@ export default function ChatInput() {
         addMessage(newMessage as Imessage);
         setOptimisticIds(newMessage.send_by as string);
 
-        const { error } = await supabase.from('messages').insert({ text });
+        const { error } = await supabase
+          .from('messages')
+          .insert({ text, room_id: activeRoom?.id });
         if (error) {
           toast.error(error.message);
         }
@@ -48,6 +53,8 @@ export default function ChatInput() {
       }
     }
   };
+
+  if (!activeRoom) return;
 
   return (
     <Input
