@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { Input } from '@/components/ui/input';
-import { supabaseBrowser } from '@/lib/supabase/browser';
 import { toast } from 'sonner';
 import { v4 as uuidv4 } from 'uuid';
+import { Input } from '@/components/ui/input';
+import { supabaseBrowser } from '@/lib/supabase/browser';
 import { useUser } from '@/lib/store/user';
 import { Imessage, useMessage } from '@/lib/store/messages';
 import { useRooms } from '@/lib/store/rooms';
@@ -13,7 +13,7 @@ export default function ChatInput() {
   const inputRef = useRef<HTMLInputElement>(null);
   const user = useUser((state) => state.user);
   const { activeRoom } = useRooms((state) => state);
-  const { addMessage, setOptimisticIds } = useMessage((state) => state);
+  const { updateMessages, setOptimisticIds } = useMessage((state) => state);
   const supabase = supabaseBrowser();
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -35,7 +35,7 @@ export default function ChatInput() {
           }
         };
 
-        addMessage(newMessage as Imessage);
+        updateMessages(newMessage as Imessage);
         setOptimisticIds(newMessage.send_by as string);
 
         const { error } = await supabase

@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { useRooms } from '@/lib/store/rooms';
 
 export function useSupabaseSubscription() {
-  const { addMessage, optimisticIds } = useMessage((state) => state);
+  const { updateMessages, optimisticIds } = useMessage((state) => state);
   const { activeRoom } = useRooms((state) => state);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export function useSupabaseSubscription() {
                 ...payload.new,
                 users: data
               };
-              addMessage(newMessage as Imessage);
+              updateMessages(newMessage as Imessage);
             }
           }
         }
@@ -42,5 +42,5 @@ export function useSupabaseSubscription() {
     return () => {
       channel.unsubscribe();
     };
-  }, [addMessage, optimisticIds, activeRoom?.id]);
+  }, [updateMessages, optimisticIds, activeRoom?.id]);
 }

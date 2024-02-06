@@ -6,13 +6,15 @@ const Messages = lazy(() => import('./Messages'));
 const InitMessages = lazy(() => import('@/lib/store/InitMessages'));
 const InitRooms = lazy(() => import('@/lib/store/InitRooms'));
 
-export default async function ListMessages({ userId }: { userId: string }) {
+export default async function ListMessages() {
   const supabase = supabaseServer();
+  const { data: userData } = await supabase.auth.getSession();
+  const user = userData.session?.user;
 
   const { data: rooms } = await supabase
     .from('rooms')
     .select('*')
-    .or(`user1_id.eq.${userId},user2_id.eq.${userId}`);
+    .or(`user1_id.eq.${user?.id},user2_id.eq.${user?.id}`);
   const { data } = await supabase.from('messages').select('*,users(*)');
 
   return (

@@ -10,16 +10,17 @@ export type Iroom = {
 interface RoomsState {
   rooms: Iroom[] | undefined;
   activeRoom: Iroom | undefined;
-  setActiveRoom: (ids: string) => void;
+  setActiveRoom: (newRoom: Iroom) => void;
   setRooms: (rooms: Iroom[]) => void;
 }
 
-export const useRooms = create<RoomsState>((set) => ({
+export const useRooms = create<RoomsState>((set, get) => ({
   rooms: undefined,
   activeRoom: undefined,
-  setActiveRoom: (id) => {
+  setActiveRoom: (newRoom) => {
     set((state) => ({
-      activeRoom: state.rooms?.find((room) => room.id === id)
+      ...state,
+      activeRoom: newRoom
     }));
   },
   setRooms: (rooms) => {

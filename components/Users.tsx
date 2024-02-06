@@ -1,12 +1,12 @@
 'use client';
 
+import Image from 'next/image';
+import { useCallback, useEffect } from 'react';
 import { useUsers } from '@/lib/store/users';
 import { useUser } from '@/lib/store/user';
 import { supabaseBrowser } from '@/lib/supabase/browser';
-import Image from 'next/image';
-import { useCallback, useEffect } from 'react';
+import { Iroom, useRooms } from '@/lib/store/rooms';
 import Spinner from './Spinner';
-import { useRooms } from '@/lib/store/rooms';
 
 export default function Users() {
   const { setActiveUsersByIds, users } = useUsers((state) => state);
@@ -15,7 +15,7 @@ export default function Users() {
   const supabase = supabaseBrowser();
 
   useEffect(() => {
-    const channel = supabase.channel('room1');
+    const channel = supabase.channel('room');
     channel
       .on('presence', { event: 'sync' }, () => {
         const activeUserIds = [];
@@ -42,7 +42,7 @@ export default function Users() {
 
       const { data: rooms, error } = await supabase
         .from('rooms')
-        .select('id')
+        .select('*')
         .or(`user1_id.eq.${user.id},user2_id.eq.${user.id}`)
         .or(`user1_id.eq.${otherUserId},user2_id.eq.${otherUserId}`);
 
@@ -51,9 +51,9 @@ export default function Users() {
         return;
       }
 
-      let roomId;
+      let room: Iroom;
       if (rooms.length > 0) {
-        roomId = rooms[0].id;
+        room = rooms[0];
       } else {
         const { data: newRoom, error: insertError } = await supabase
           .from('rooms')
@@ -65,10 +65,10 @@ export default function Users() {
           console.error('Error creating new room:', insertError);
           return;
         }
-        roomId = newRoom?.id;
+        room = newRoom;
       }
-      if (roomId) {
-        setActiveRoom(roomId);
+      if (room) {
+        setActiveRoom(room);
       }
     },
     [setActiveRoom, supabase, user]

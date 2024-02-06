@@ -1,13 +1,14 @@
 'use client';
 
-import { useMessage } from '@/lib/store/messages';
-import Image from 'next/image';
 import { useRef } from 'react';
-import Spinner from './Spinner';
+import Image from 'next/image';
 import { useAutoScroll } from '@/hooks/useAutoScroll';
 import { useSupabaseSubscription } from '@/hooks/useSupabaseSubscription';
+import { useMessage } from '@/lib/store/messages';
 import { useUsers } from '@/lib/store/users';
 import { useRooms } from '@/lib/store/rooms';
+import { useRoomMessages } from '@/hooks/useRoomMessages';
+import Spinner from './Spinner';
 
 export default function Messages() {
   const scrollRef = useRef() as React.MutableRefObject<HTMLDivElement>;
@@ -16,6 +17,7 @@ export default function Messages() {
   const { activeRoom } = useRooms((state) => state);
 
   useSupabaseSubscription();
+  useRoomMessages();
   useAutoScroll(scrollRef);
 
   const isUserActive = (id: string) =>
