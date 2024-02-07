@@ -9,16 +9,8 @@ export type Iuser = {
 
 interface UsersState {
   users: Iuser[] | undefined;
-  activeUsers: Iuser[] | undefined;
-  setActiveUsersByIds: (ids: string[]) => void;
 }
 
 export const useUsers = create<UsersState>()((set, get) => ({
-  users: undefined,
-  activeUsers: undefined,
-  setActiveUsersByIds: (ids) => {
-    const allUsers = get().users;
-    const active = allUsers?.filter((user) => ids.includes(user.id));
-    set({ activeUsers: active });
-  }
+  users: undefined
 }));

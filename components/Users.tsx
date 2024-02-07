@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useUsers } from '@/lib/store/users';
 import { useUser } from '@/lib/store/user';
 import { supabaseBrowser } from '@/lib/supabase/browser';
@@ -9,32 +9,10 @@ import { Iroom, useRooms } from '@/lib/store/rooms';
 import Spinner from './Spinner';
 
 export default function Users() {
-  const { setActiveUsersByIds, users } = useUsers((state) => state);
+  const { users } = useUsers((state) => state);
   const { user } = useUser((state) => state);
   const { setActiveRoom } = useRooms((state) => state);
   const supabase = supabaseBrowser();
-
-  useEffect(() => {
-    const channel = supabase.channel('room');
-    channel
-      .on('presence', { event: 'sync' }, () => {
-        const activeUserIds = [];
-        for (const id in channel.presenceState()) {
-          // @ts-ignore
-          activeUserIds.push(channel.presenceState()[id][0].user_id);
-        }
-        setActiveUsersByIds(activeUserIds);
-      })
-      .subscribe(async (status) => {
-        if (status === 'SUBSCRIBED') {
-          await channel.track({
-            online_at: new Date().toISOString(),
-            user_id: user?.id
-          });
-        }
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
 
   const handleUserClick = useCallback(
     async (otherUserId: string) => {

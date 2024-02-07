@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { useAutoScroll } from '@/hooks/useAutoScroll';
 import { useSupabaseSubscription } from '@/hooks/useSupabaseSubscription';
 import { useMessage } from '@/lib/store/messages';
-import { useUsers } from '@/lib/store/users';
 import { useRooms } from '@/lib/store/rooms';
 import { useRoomMessages } from '@/hooks/useRoomMessages';
 import Spinner from './Spinner';
@@ -13,15 +12,11 @@ import Spinner from './Spinner';
 export default function Messages() {
   const scrollRef = useRef() as React.MutableRefObject<HTMLDivElement>;
   const { messages } = useMessage((state) => state);
-  const { activeUsers } = useUsers((state) => state);
   const { activeRoom } = useRooms((state) => state);
 
   useSupabaseSubscription();
   useRoomMessages();
   useAutoScroll(scrollRef);
-
-  const isUserActive = (id: string) =>
-    activeUsers?.some((user) => user.id === id);
 
   const filteredMessages = messages?.filter(
     (message) => message.room_id === activeRoom?.id
@@ -58,12 +53,9 @@ export default function Messages() {
           <div className="flex flex-col gap-1">
             <div className="flex flex-col lg:flex-row gap-1 lg:gap-2 lg:items-center">
               <div className="flex items-center gap-1">
-                {message?.users?.id && isUserActive(message?.users?.id) && (
-                  <div className="h-2 w-2 bg-green-500 rounded-full" />
-                )}
-                <h2 className="font-bold capitalize text-sm">
+                <h3 className="font-bold capitalize text-sm">
                   {message?.users?.display_name}
-                </h2>
+                </h3>
               </div>
               <h3 className="text-gray-400 text-xs w-28">
                 {new Date(message?.created_at!).toDateString()}
