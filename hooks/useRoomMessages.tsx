@@ -5,12 +5,12 @@ import { supabaseBrowser } from '@/lib/supabase/browser';
 
 export const useRoomMessages = () => {
   const { activeRoom } = useRooms((state) => state);
-  const { updateMessages } = useMessage((state) => state);
+  const { updateMessages, setLoadingMessages } = useMessage((state) => state);
   const supabase = supabaseBrowser();
 
   useEffect(() => {
     if (!activeRoom) return;
-
+    setLoadingMessages(true);
     const fetchRoomMessages = async () => {
       const { data: messages, error } = await supabase
         .from('messages')
@@ -35,6 +35,7 @@ export const useRoomMessages = () => {
         console.error('Error fetching messages:', error);
       } else {
         updateMessages(messages);
+        setLoadingMessages(false);
       }
     };
 

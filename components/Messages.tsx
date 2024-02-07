@@ -11,7 +11,7 @@ import Spinner from './Spinner';
 
 export default function Messages() {
   const scrollRef = useRef() as React.MutableRefObject<HTMLDivElement>;
-  const { messages } = useMessage((state) => state);
+  const { messages, isLoadingMessages } = useMessage((state) => state);
   const { activeRoom } = useRooms((state) => state);
 
   useSupabaseSubscription();
@@ -32,13 +32,13 @@ export default function Messages() {
 
   return (
     <div
-      className={`flex flex-col gap-2 max-h-[320px] ${
+      className={`flex flex-col gap-2 h-[320px] ${
         filteredMessages !== undefined && 'overflow-y-auto'
       }`}
       ref={scrollRef}
     >
       {filteredMessages === undefined && <Spinner />}
-      {filteredMessages?.length === 0 && (
+      {activeRoom && !isLoadingMessages && filteredMessages?.length === 0 && (
         <p className="text-gray-300 text-center max-w-[240px] mx-auto">{`No messages in this chat yet. Start the conversation!`}</p>
       )}
       {filteredMessages?.map((message) => (

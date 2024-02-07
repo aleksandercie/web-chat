@@ -17,13 +17,16 @@ export type Imessage = {
 interface MessageState {
   messages: Imessage[] | undefined;
   optimisticIds: string[];
+  isLoadingMessages: boolean;
   setOptimisticIds: (id: string) => void;
   updateMessages: (messages: Imessage | Imessage[]) => void;
+  setLoadingMessages: (isLoading: boolean) => void;
 }
 
 export const useMessage = create<MessageState>((set) => ({
   messages: undefined,
   optimisticIds: [],
+  isLoadingMessages: false,
   setOptimisticIds: (id) =>
     set((state) => ({
       optimisticIds: [...state.optimisticIds, id]
@@ -38,5 +41,7 @@ export const useMessage = create<MessageState>((set) => ({
           : [newMessages];
         return { messages: updatedMessages };
       }
-    })
+    }),
+  setLoadingMessages: (isLoading) =>
+    set(() => ({ isLoadingMessages: isLoading }))
 }));
